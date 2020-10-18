@@ -30,7 +30,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
-app.use("/blogs", blogsRouter);
+app.use("api/blogs", blogsRouter);
 app.use("/users", usersRouter);
 app.use("/login", loginRouter);
 

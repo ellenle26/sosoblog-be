@@ -3,11 +3,27 @@ const blogsController = {};
 
 blogsController.getBlogs = async (req, res, next) => {
   try {
-    const bloglist = await Blog.find();
+    let { page, limit } = req.query;
+    page = parseInt(page) || 1;
+    limit = parseInt(limit) || 10;
+
+    const totalBlogs = await Blog.countDocuments({
+      isDeleted: false,
+    });
+    const totalPages = Math.ceil(totalBlogs / limit);
+    const offset = limit * (page - 1);
+
+    // console.log({ filter, sortBy });
+    const blogs = await Blog.find()
+      .sort({ createdAt: -1 })
+      .skip(offset)
+      .limit(limit)
+      .populate("author");
+
     res.status(200).json({
       status: "success",
-      data: bloglist,
-      message: "Sucessfully get all the blogs",
+      data: { blogs, totalPages },
+      message: `Found ${blogs.length} blog(s)`,
     });
   } catch (err) {
     res.status(400).json({
