@@ -3,6 +3,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 require("dotenv").config();
+const cors = require("cors");
 
 const mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/sosoblog", {
@@ -22,6 +23,7 @@ const loginRouter = require("./routes/login");
 
 const app = express();
 
+app.use(cors());
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
