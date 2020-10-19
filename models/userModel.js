@@ -7,10 +7,10 @@ const userSchema = Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    avatarUrl: { type: String, require: false, default: "" },
+    avatarUrl: { type: String, required: false, default: "" },
     password: { type: String, required: true, select: false },
     emailVerificationCode: { type: String, select: false },
-    emailVerified: { type: Boolean, require: true, default: false },
+    emailVerified: { type: Boolean, required: true, default: false },
     friendCount: { type: Number, default: 0 },
     isDeleted: { type: Boolean, default: false, select: false },
   },
@@ -18,6 +18,7 @@ const userSchema = Schema(
 );
 
 userSchema.plugin(require("./plugins/isDeletedFalse"));
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
@@ -26,11 +27,12 @@ userSchema.pre("save", async function (next) {
 });
 
 userSchema.statics.loginWithEmail = async (email, password) => {
-  const user = await User.findOne({ email: email });
   if (!email) {
     throw new Error("we don't have that user");
   }
 
+  const user = await User.findOne({ email: email }).select("password");
+  console.log(user.password);
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
     throw new Error("password is not match");
