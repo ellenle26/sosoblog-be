@@ -6,7 +6,7 @@ require("dotenv").config();
 const cors = require("cors");
 
 const mongoose = require("mongoose");
-mongoose.connect("mongodb://localhost/sosoblog", {
+mongoose.connect(process.env.DB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });

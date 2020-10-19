@@ -45,13 +45,13 @@ const generateData = async () => {
     const userNum = 10;
     const otherNum = 3; // num of blog each user, reviews or reactions each blog
     for (let i = 0; i < userNum; i++) {
-      const salt = await bcrypt.genSalt(10);
-      const password = await bcrypt.hash("123", salt);
+      // const salt = await bcrypt.genSalt(10);
+      // const password = await bcrypt.hash("123", salt);
       await User.create({
         name: faker.name.findName(),
         email: faker.internet.email().toLowerCase(),
         avatarUrl: faker.image.avatar(),
-        password,
+        password: "123",
         emailVerified: true,
       }).then(function (user) {
         console.log("Created new user: " + user.name);
