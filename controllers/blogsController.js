@@ -18,12 +18,30 @@ blogsController.getBlogs = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
-      .populate("author");
+      .populate("author")
+      .populate("comments")
+      .populate("reactions");
 
     res.status(200).json({
       status: "success",
       data: { blogs, totalPages },
       message: `Found ${blogs.length} blog(s)`,
+    });
+  } catch (err) {
+    res.status(400).json({
+      status: "fail",
+      message: err.message,
+    });
+  }
+};
+
+blogsController.getSingleBlog = async (req, res) => {
+  try {
+    const singleBlog = await Blog.findById(req.params.id);
+    res.status(200).json({
+      status: "success",
+      data: singleBlog,
+      message: `Found blog ${singleBlog._id}`,
     });
   } catch (err) {
     res.status(400).json({
