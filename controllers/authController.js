@@ -7,6 +7,7 @@ authController.login = async (req, res) => {
     console.log("email", email, "pass", password);
 
     if (!email || !password) {
+      console.log("emadsdsdsdil", email, "pass", password);
       throw new Error("You have no email or password");
     }
     const user = await User.loginWithEmail(email, password);
