@@ -35,7 +35,7 @@ blogsController.getBlogs = async (req, res, next) => {
 
 blogsController.getSingleBlog = async (req, res) => {
   try {
-    const singleBlog = await Blog.findById(req.params.id).populate("user");
+    const singleBlog = await Blog.findById(req.params.id).populate("author");
     res.status(200).json({
       status: "success",
       data: singleBlog,
