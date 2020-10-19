@@ -18,9 +18,7 @@ blogsController.getBlogs = async (req, res, next) => {
       .sort({ createdAt: -1 })
       .skip(offset)
       .limit(limit)
-      .populate("author")
-      .populate("comments")
-      .populate("reactions");
+      .populate("author");
 
     res.status(200).json({
       status: "success",
